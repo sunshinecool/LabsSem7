@@ -16,6 +16,7 @@ void connectToServer(int sfd,const struct sockaddr_in &serv_addr, int addr_size)
 		return -1;
 	}
 }
+int sfd;
 int main(int argc, char** argv[]){
 	if(argc!=3){
 		cout<<"Enter IP and port seperately!"<<endl;
@@ -24,7 +25,6 @@ int main(int argc, char** argv[]){
 	string ip_addr = argv[1];
 	int serv_port = atoi(argv[2]);
 
-	int sfd;
 	struct sockaddr_in serv_addr;
 	int addr_size = sizeof(serv_addr);
 	/* Needs to be done for external IP*/
@@ -52,10 +52,15 @@ int main(int argc, char** argv[]){
 			string room_name;
 			cout<<"Enter the exact name of the chat room: ";
 			cin>>room_name;
-			if(connetToServer(sfd, serv_addr, addr_size) < 0)
-				return 1;
-			sendMessage(sfd, "			
-
+			string join_msg = "a#"+room_name;
+			sendMessage(join_msg);
+                        string join_reply = recieveMessage();
+			if(join_reply=="y"){
+				cout<<room_name<<" joined."<<endl;
+				while(1){
+					getch
+				}
+			}
 	}
 
 }
