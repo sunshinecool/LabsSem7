@@ -43,7 +43,7 @@ int main(int argc, char** argv){
 		
 		printf("%d\n", client_addr.sin_port);
 		printf("%d\n", b);
-		/*t = time(NULL);
+		t = time(NULL);
 
 		tm = localtime(&t);
 
@@ -55,9 +55,7 @@ int main(int argc, char** argv){
 	      		tm->tm_min,
 	      		tm->tm_sec,
 	      		tm->tm_zone);
-		*/
-		tmsg[0] = 'a';
-		tmsg[1] = '\0'; 
+
 		printf("%s", tmsg);	
 		send(cfd, tmsg, strlen(tmsg), 1);
 
