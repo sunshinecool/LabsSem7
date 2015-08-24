@@ -20,7 +20,7 @@ int main(){
 			for(j=0; j<2; j++){
 				int pidc;
 				pidc = vfork();
-				if(pidc) {
+				if(pidc){
 					//sleep(2);
 					continue;
 				}
