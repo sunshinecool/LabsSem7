@@ -158,6 +158,7 @@ void reassemble(string s[],int n,int MTU)
 
 int main()
 {
+	cout<<hextodec("0FB4")<<endl;
 	string ip="01010FB412340000";
 	cout<<"Original Packet : "<<ip<<endl;
 	for(int i=0;i<(2800*3);i++)

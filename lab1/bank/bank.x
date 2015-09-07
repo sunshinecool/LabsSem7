@@ -1,7 +1,7 @@
 struct account {
 	int accno;
 	bool update;
-	bool money;
+	int money;
 };
 
 program PRINTER {
