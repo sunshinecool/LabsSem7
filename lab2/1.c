@@ -7,7 +7,7 @@
 #include<time.h>
 #include<stdlib.h>
 int main(){
-	int skt = socket(AF_INET, SOCK_STREAM, 0);
+	int skt = socket(AF_INET, SOCK_DGRAM, 0);
 	int sockrcvsize = 0; int size = sizeof(int); 
 	int socksndsize = 0;
 	int newsize, err;
