@@ -99,4 +99,55 @@ for(ifa = ifaddr, n=0; ifa!=NULL; ifa=ifa->ifa_next, n++){
 ```
 This above code checks if the family of the interface is AF_INET or AF_INET6 and prints their names.
 
+Lab2.4a
+=======
+We read the routing table from the file, `/proc/net/route`. The code is self explanatory.
 
+Lab2.4b
+=======
+We need to on the IP forwarding of the machine and in make the proxy server as the first hop or gateway in the client systems
+that act as clients to the router(our proxy system)
+Both the steps are explained here:
+```
+sudo sysctl net.ipv4.ip_forward=1;
+```
+This enable IP forwarding of the machine and it will forward all the packet it recieves to the correct machine, in affect 
+acting as router.
+```
+route add -net 10.34.0.0 netmask 255.255.0.0 gw $routerIp
+```
+This ensures that a gateway is added to client.
+
+Lab2.5
+======
+**Ping**
+This program contains two main functions `ping` and `listener`. These two functions perform the function of pinging the host and listening for the messages respectively.
+The `struct packet` is the structure that represents the packet that is to be sent. It contains an ICMP header and data. here we are keeping the data as all zeros. This can be made to present timestamp to calculate the RTT. ie; Round trip time, but that is not done here.
+The packet header is filled according to ICMP echo header.
+```
+pckt.hdr.type = ICMP_ECHO;
+pckt.hdr.un.echo.id = pid;
+pckt.msg[i] = 0;
+pckt.hdr.un.echo.sequence = cnt++;
+pckt.hdr.checksum = checksum(&pckt, sizeof(pckt));
+```
+Here the function `checksum` calculates the checksum of the header and the data that is an array of zero.
+
+The program creates a child that listens for the reply messages while the parent process continously pings the host.
+**Listener**
+```
+void listener(){
+	for(;;)
+		bytes = recvfrom(sd, buf, sizeof(buf), 0, (struct sockaddr*)&addr, &len);
+}
+```
+**Ping**
+```
+void ping(){
+	for(;;){
+		// create header and data
+		if ( sendto(sd, &pckt, sizeof(pckt), 0, (struct sockaddr*)addr, sizeof(*addr)) <= 0 )
+			perror("sendto");
+	}
+}
+```
