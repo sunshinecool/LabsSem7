@@ -44,7 +44,7 @@ struct ifreq {
                    struct sockaddr ifr_dstaddr;
                    struct sockaddr ifr_broadaddr;
                    struct sockaddr ifr_netmask;
-                   struct sockaddr ifr_hwaddr;
+                   struct sockaddr ifr_hwaddr;    /* Hardware address */
                    short           ifr_flags;
                    int             ifr_ifindex;
                    int             ifr_metric;
@@ -57,8 +57,46 @@ struct ifreq {
            };
 ``` 
 We assign the input interface to the `ifr.ifr_name` using the strncpy function.
-`strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);`
-We pass this `struct ifr` to ioctl fucntion with the flag ** SIOCGIFHWADDR** which completes the struct and which contains the mac address.
+```strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);```
+We pass this `struct ifr` to ioctl fucntion with the flag **SIOCGIFHWADDR** which completes the struct and which contains the mac address.
 ```
 ioctl(fd, SIOCGIFHWADDR, &ifr);
 ```
+We access the hardware address of the interface using `ifr_hwaddr` member of the `struct ifreq`.
+```
+mac = (unsigned char *)ifr.ifr_hwaddr.sa_data;
+```
+
+>Input: The interface name.
+>Output: The mac address.
+
+Lab2.3
+======
+Here our goal is to find all the interfaces available on a machine. To store this I used `getifaddrs()` function. 
+The `getifaddrs()` function creates a linked list of structures describing the network interfaces of the local system, and stores the address of the first item of the list in *ifap.  The list consists of ifaddrs structures, defined as follows:
+```
+           struct ifaddrs {
+               struct ifaddrs  *ifa_next;    /* Next item in list */
+               char            *ifa_name;    /* Name of interface */
+               unsigned int     ifa_flags;   /* Flags from SIOCGIFFLAGS */
+               struct sockaddr *ifa_addr;    /* Address of interface */
+               struct sockaddr *ifa_netmask; /* Netmask of interface */
+               union {
+                   struct sockaddr *ifu_broadaddr;  /* Broadcast address of interface */
+                   struct sockaddr *ifu_dstaddr;    /* Point-to-point destination address */
+               } ifa_ifu;
+```
+The `struct ifaddrs  *ifa_next;` stores the address of next struct in the linked list. We need to travel through this linked list and print the names of IPv4 and IPv6 interfaces.
+```
+for(ifa = ifaddr, n=0; ifa!=NULL; ifa=ifa->ifa_next, n++){
+		if(ifa->ifa_addr == NULL) continue;
+		family = ifa->ifa_addr->sa_family;
+		if(family == AF_INET) 
+			printf("AF_INET : %s\n", ifa->ifa_name);
+		else if(family == AF_INET6) 
+			printf("AF_INET6: %s\n", ifa->ifa_name);
+	}
+```
+This above code checks if the family of the interface is AF_INET or AF_INET6 and prints their names.
+
+
