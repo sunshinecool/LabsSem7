@@ -133,15 +133,15 @@ Client Chat application
 The client creates a socket and connect to the server using the port number of the server. The client is given two options 
 
 
-..* To create a new chatroom.
-..* To join an already created chat room.
++ To create a new chatroom.
++ To join an already created chat room.
 
 If the client chooses to join a chat room the client and server use a protocol to communicate and tell the server what the client wants during the chatroom joining stage.
 
 **Protocol used:**
-..* #a - Send the names of the chat rooms!
-..* #b - Take chat room as input and send conformation as y/n.
-..* #c - Send messages to chat room!
++ #a - Send the names of the chat rooms!
++ #b - Take chat room as input and send conformation as y/n.
++ #c - Send messages to chat room!
 For example, if the client send a message starting with #a, the server parses this message and responds with the list of chat rooms that are available.
 
 Once the client is connected and added to a chat room, it can send and recieve messages.
