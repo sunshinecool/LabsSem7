@@ -1,21 +1,20 @@
-# LabsSem7
-
 Lab2.1
 ======
 The send and recive buffers of both TCP and UDP sockets can be accessed and modified by *getsockopt* and *setsockopt* respectively.
-* **getsockopt**: getsockopt(*socket, SOL_SOCKET, SO_SNDBUF/SO_RCVBUF, (char***)&socksndbuf, sizeof(int)*)
-* **setsockopt**: setsockopt(*socket, SOL_SOCKET, SO_SNDBUF/SO_RCVBUF, (char***)&newbuf, sizeof(newbuf)*)
++ **getsockopt**: getsockopt(socket, SOL_SOCKET, SO_SNDBUF/SO_RCVBUF, (char*)&socksndbuf, sizeof(int)*)
++ **setsockopt**: setsockopt(socket, SOL_SOCKET, SO_SNDBUF/SO_RCVBUF, (char*)&newbuf, sizeof(newbuf)*)
 
 Depending on which buffer ie; send/recieve and which protocol buffers ie; TCP/UDP, we need to change the parameters of the *getsockopt*
 and *setsockopt* functions.
-* For getting/setting the value of send buffer in TCP, we need to make a TCP socket and use SO_SNDBUF.
-* For getting/setting the value of receive buffer in TCP, we need to make a TCP socket and use SO_RCVBUF.
-* For getting/setting the value of send buffer in UDP, we need to make a UDP socket and use SO_SNDBUF.
-* For getting/setting the value of receive buffer in UDP, we need to make a UDP socket and use SO_RCVBUF.
++ For getting/setting the value of send buffer in TCP, we need to make a TCP socket and use SO_SNDBUF.
++ For getting/setting the value of receive buffer in TCP, we need to make a TCP socket and use SO_RCVBUF.
++ For getting/setting the value of send buffer in UDP, we need to make a UDP socket and use SO_SNDBUF.
++ For getting/setting the value of receive buffer in UDP, we need to make a UDP socket and use SO_RCVBUF.
 
 In the code *only* setting and getting of TCP buffers is done, but it can be done for UDP buffers also by using the rules above.
 
 >Input: option to get/set buffers and value of buffer in case of set.
+
 >Output: The present value of the buffers in case of get and updated value of buffer size in case of set.
 
 Lab2.2a
@@ -31,6 +30,7 @@ getnameinfo(&sa, sizeof sa, host, sizeof host, service, sizeof service, 0);
 The hostname and service are returned by the function in host and service parameter respectively.
 
 > Input: IP and port.
+
 > Output: The hostname and service.
 
 Lab2.2b
@@ -68,6 +68,7 @@ mac = (unsigned char *)ifr.ifr_hwaddr.sa_data;
 ```
 
 >Input: The interface name.
+
 >Output: The mac address.
 
 Lab2.3
