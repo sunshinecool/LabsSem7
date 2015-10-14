@@ -13,18 +13,52 @@ and *setsockopt* functions.
 * For getting/setting the value of send buffer in UDP, we need to make a UDP socket and use SO_SNDBUF.
 * For getting/setting the value of receive buffer in UDP, we need to make a UDP socket and use SO_RCVBUF.
 
-> In the code *only* setting and getting of TCP buffers is done, but it can be done for UDP buffers also by using the rules above.
+In the code *only* setting and getting of TCP buffers is done, but it can be done for UDP buffers also by using the rules above.
 
+>Input: option to get/set buffers and value of buffer in case of set.
+>Output: The present value of the buffers in case of get and updated value of buffer size in case of set.
 
 Lab2.2a
-======
+=======
 In this question ***getnameinfo*** funtion is used to do reverse DNS or domain name and service identification from an IP and a port.
 Here the service will be identified as one of the common services like *http, https* etc.
 The functino getnameinfo takes IP and port as input and identifies the domain name and service that is running on that port.
 For example 127.0.0.1:80 would give *localhost* and *http*(provided a http server like apache is running).
 
-> In the code, IP and port are taken as inputs.
+```
+getnameinfo(&sa, sizeof sa, host, sizeof host, service, sizeof service, 0);
+```
+The hostname and service are returned by the function in host and service parameter respectively.
+
+> Input: IP and port.
+> Output: The hostname and service.
 
 Lab2.2b
 =======
-Goal is to find out the mac address of an interface. 
+Goal is to find out the mac address of an interface. Here we use *struct ifreq ifr;* The ifreq struct is used as parameter to ioctl function as request struct. The structure of ifreq is given below. The ioctl function completes the struct for us when we need the data about an interface.
+```
+struct ifreq {
+               char ifr_name[IFNAMSIZ]; /* Interface name */
+               union {
+                   struct sockaddr ifr_addr;
+                   struct sockaddr ifr_dstaddr;
+                   struct sockaddr ifr_broadaddr;
+                   struct sockaddr ifr_netmask;
+                   struct sockaddr ifr_hwaddr;
+                   short           ifr_flags;
+                   int             ifr_ifindex;
+                   int             ifr_metric;
+                   int             ifr_mtu;
+                   struct ifmap    ifr_map;
+                   char            ifr_slave[IFNAMSIZ];
+                   char            ifr_newname[IFNAMSIZ];
+                   char           *ifr_data;
+               };
+           };
+``` 
+We assign the input interface to the `ifr.ifr_name` using the strncpy function.
+`strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);`
+We pass this `struct ifr` to ioctl fucntion with the flag ** SIOCGIFHWADDR** which completes the struct and which contains the mac address.
+```
+ioctl(fd, SIOCGIFHWADDR, &ifr);
+```
